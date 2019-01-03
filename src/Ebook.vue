@@ -154,7 +154,7 @@ export default {
     z-index: 101;
     display: flex;
     background: wheat;
-    box-shadow: 0 px2rem(8) px2rem(8) rgba(0, 0, 0, .20);
+    box-shadow: 0 px2rem(-8) px2rem(8) rgba(0, 0, 0, .20);
     .icon-wrapper {
       flex: 1;
       @include center;
