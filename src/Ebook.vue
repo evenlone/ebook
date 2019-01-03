@@ -1,23 +1,6 @@
 <template>
   <div class="ebook">
-    <transition name="slide-down">
-      <div class="title-wrapper" v-show="ifShowBar">
-        <div class="left">
-          <span class="icon-back icon"></span>
-        </div>
-        <div class="right">
-          <div class="icon-wrapper">
-            <div class="icon-cart icon"></div>
-          </div>
-          <div class="icon-wrapper">
-            <div class="icon-person icon"></div>
-          </div>
-          <div class="icon-wrapper">
-            <div class="icon-more icon"></div>
-          </div>
-        </div>
-      </div>
-    </transition>
+    <title-bar :ifShowBar="ifShowBar"></title-bar>
     <div class="read-wrapper">
       <div id="read"></div>
       <div class="mask">
@@ -26,37 +9,43 @@
         <div class="right" @click="nextPage"></div>
       </div>
     </div>
-    <transition name="slide-up">
-      <div class="menu-wrapper" v-show="ifShowBar">
-        <div class="icon-wrapper">
-          <span class="icon-menu icon"></span>
-        </div>
-        <div class="icon-wrapper">
-          <span class="icon-progress icon"></span>
-        </div>
-        <div class="icon-wrapper">
-          <span class="icon-bright icon"></span>
-        </div>
-        <div class="icon-wrapper">
-          <span class="icon-a icon">A</span>
-        </div>
-      </div>
-    </transition>
+    <menu-bar :ifShowBar="ifShowBar"
+              :fontSizeList="fontSizeList"
+              ref="menuBar"
+              ></menu-bar>
   </div>
 </template>
 
 <script>
+import TitleBar from '@/components/TitleBar'
+import MenuBar from '@/components/MenuBar'
 import Epub from 'epubjs'
 const DOWNLOAD_URL = '/static/sfdl.epub'
 export default {
+  components: {
+    TitleBar,
+    MenuBar
+  },
   data () {
     return {
-      ifShowBar: false
+      ifShowBar: false,
+      fontSizeList: [
+        {fontSize: 12},
+        {fontSize: 14},
+        {fontSize: 16},
+        {fontSize: 18},
+        {fontSize: 20},
+        {fontSize: 22},
+        {fontSize: 24}
+      ]
     }
   },
   methods: {
     toggleShowBar() {
       this.ifShowBar = !this.ifShowBar
+      if (!this.ifShowBar) {
+        this.$refs.menuBar.HideFontSizeBar()
+      }
     },
     prevPage() {
       if (this.rendition) {
@@ -98,33 +87,6 @@ export default {
 @import 'assets/styles/global.scss';
 .ebook {
   position: relative;
-  .title-wrapper {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: px2rem(48);
-    z-index: 101;
-    display: flex;
-    background: wheat;
-    box-shadow: 0 px2rem(8) px2rem(8) rgba(0, 0, 0, .20);
-    .left {
-      flex: 0 0 px2rem(60);
-      @include center;
-    }
-    .right {
-      flex: 1;
-      display: flex;
-      justify-content: flex-end;
-      .icon-wrapper {
-        flex:0 0 px2rem(40);
-        @include center;
-        .icon-cart {
-          font-size: px2rem(22);
-        }
-      }
-    }
-  }
   .read-wrapper {
     .mask {
       position: absolute;
@@ -142,24 +104,6 @@ export default {
       }
       .right {
          flex: 0 0 px2rem(100);
-      }
-    }
-  }
-  .menu-wrapper {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: px2rem(48);
-    z-index: 101;
-    display: flex;
-    background: wheat;
-    box-shadow: 0 px2rem(-8) px2rem(8) rgba(0, 0, 0, .20);
-    .icon-wrapper {
-      flex: 1;
-      @include center;
-      .icon-progress,.icon-bright{
-        font-size: px2rem(24);
       }
     }
   }
