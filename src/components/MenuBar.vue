@@ -19,6 +19,14 @@
       <transition name="slide-up">
         <div class="setting-wrapper" v-show="ifShowFontSize">
           <div class="setting-font-size">
+            <div class="preview"
+                 :style="{fontSize:fontSizeList[0].fontSize + 'px'}">A</div>
+            <div class="select-wrapper">
+              <div class="line"></div>
+              <div class="point-wrapper"></div>
+            </div>
+            <div class="preview"
+                 :style="{fontSize:fontSizeList[fontSizeList.length - 1].fontSize + 'px'}">A</div>
           </div>
         </div>
       </transition>
@@ -31,6 +39,9 @@ export default {
     ifShowBar: {
       type: Boolean,
       default: false
+    },
+    fontSizeList: {
+      type: Array
     }
   },
   data () {
@@ -40,7 +51,7 @@ export default {
   },
   methods: {
     ShowFontSizeBar () {
-      this.ifShowFontSize = true
+      this.ifShowFontSize = !this.ifShowFontSize
     },
     HideFontSizeBar () {
       this.ifShowFontSize = false
@@ -79,9 +90,19 @@ export default {
     left: 0;
     width: 100%;
     height: px2rem(60);
+    z-index: 101;
     background: wheat;
     box-shadow: 0 px2rem(-8) px2rem(8) rgba(0, 0, 0, .20);
     .setting-font-size {
+      display: flex;
+      height: 100%;
+      .preview {
+        flex: 0 0 px2rem(40);
+        @include center;
+      }
+      .select-wrapper {
+        flex: 1;
+      }
     }
   }
 }

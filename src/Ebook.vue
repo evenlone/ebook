@@ -60,6 +60,7 @@ export default {
       if (this.rendition) {
         if (this.ifShowBar) {
           this.ifShowBar = false
+          this.$refs.menuBar.ifShowFontSize = false
         } else {
           this.rendition.next()
         }
@@ -100,7 +101,8 @@ export default {
         flex: 0 0 px2rem(100);
       }
       .center {
-        flex: 1
+        flex: 1;
+        background: lightblue;
       }
       .right {
          flex: 0 0 px2rem(100);
