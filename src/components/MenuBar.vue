@@ -24,7 +24,9 @@
               <div class="select-wrapper" v-for="(item, index) in fontSizeList" :key="index">
               <div class="line"></div>
               <div class="point-wrapper">
-                <div class="point"></div>
+                <div class="point" v-show="defaultFontSize === item.fontSize">
+                  <div class="small-point"></div>
+                </div>
               </div>
               <div class="line"></div>
               </div>
@@ -43,9 +45,8 @@ export default {
       type: Boolean,
       default: false
     },
-    fontSizeList: {
-      type: Array
-    }
+    fontSizeList: Array,
+    defaultFontSize: Number
   },
   data () {
     return {
@@ -131,10 +132,29 @@ export default {
             border-top: px2rem(1) solid #ccc;
           }
           .point-wrapper {
+            position: relative;
             flex: 0 0 0 ;
             width: 0;
             height: px2rem(7);
             border-left: px2rem(1) solid #ccc;
+            .point {
+              position: absolute;
+              top: px2rem(-8);
+              left: px2rem(-10);
+              width: px2rem(20);
+              height: px2rem(20);
+              border-radius: 50%;
+              background:whitesmoke;
+              border: px2rem(1) solid #ccc;
+              box-shadow: 0 px2rem(4) px2rem(4) rgba(0, 0, 0, .20);
+              @include center;
+              .small-point {
+                width: px2rem(5);
+                height: px2rem(5);
+                background: black;
+               border-radius: 50%;
+              }
+            }
           }
         }
       }

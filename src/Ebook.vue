@@ -11,6 +11,7 @@
     </div>
     <menu-bar :ifShowBar="ifShowBar"
               :fontSizeList="fontSizeList"
+              :defaultFontSize="defaultFontSize"
               ref="menuBar"
               ></menu-bar>
   </div>
@@ -37,7 +38,8 @@ export default {
         {fontSize: 20},
         {fontSize: 22},
         {fontSize: 24}
-      ]
+      ],
+      defaultFontSize: 16
     }
   },
   methods: {
@@ -102,7 +104,6 @@ export default {
       }
       .center {
         flex: 1;
-        background: lightblue;
       }
       .right {
          flex: 0 0 px2rem(100);
