@@ -21,7 +21,8 @@
           <div class="setting-font-size">
             <div class="preview" :style="{fontSize: fontSizeList[0].fontSize + 'px'}">A</div>
             <div class="select">
-              <div class="select-wrapper" v-for="(item, index) in fontSizeList" :key="index">
+              <div class="select-wrapper" v-for="(item, index) in fontSizeList" :key="index"
+               @click="setFontSize(item.fontSize)">
               <div class="line"></div>
               <div class="point-wrapper">
                 <div class="point" v-show="defaultFontSize === item.fontSize">
@@ -59,6 +60,9 @@ export default {
     },
     HideFontSizeBar () {
       this.ifShowFontSize = false
+    },
+    setFontSize (fontSize) {
+      this.$emit('setFontSize', fontSize)
     }
   }
 }
@@ -151,8 +155,8 @@ export default {
               .small-point {
                 width: px2rem(5);
                 height: px2rem(5);
-                background: black;
-               border-radius: 50%;
+                background: #666;
+                border-radius: 50%;
               }
             }
           }

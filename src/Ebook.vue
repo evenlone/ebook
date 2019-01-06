@@ -12,6 +12,7 @@
     <menu-bar :ifShowBar="ifShowBar"
               :fontSizeList="fontSizeList"
               :defaultFontSize="defaultFontSize"
+              @setFontSize="setFontSize"
               ref="menuBar"
               ></menu-bar>
   </div>
@@ -43,6 +44,12 @@ export default {
     }
   },
   methods: {
+    setFontSize (fontSize) {
+      this.defaultFontSize = fontSize
+      if (this.themes) {
+        this.themes.fontSize(fontSize + 'px')
+      }
+    },
     toggleShowBar() {
       this.ifShowBar = !this.ifShowBar
       if (!this.ifShowBar) {
@@ -79,6 +86,10 @@ export default {
       })
       // 通过Renditon.display 渲染电子书
       this.rendition.display()
+      // themes 对象
+      this.themes = this.rendition.themes
+      // 默认字体
+      this.setFontSize(this.defaultFontSize)
     }
   },
   mounted () {
