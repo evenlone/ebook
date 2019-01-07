@@ -102,7 +102,6 @@ export default {
       }
       .center {
         flex: 1;
-        background: lightblue;
       }
       .right {
          flex: 0 0 px2rem(100);
