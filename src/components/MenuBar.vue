@@ -9,27 +9,38 @@
             <span class="icon-progress icon"></span>
           </div>
           <div class="icon-wrapper">
-            <span class="icon-bright icon"></span>
+            <span class="icon-bright icon" @click="showSetting(1)"></span>
           </div>
           <div class="icon-wrapper">
-            <span class="icon-a icon" @click="ShowFontSizeBar">A</span>
+            <span class="icon-a icon" @click="showSetting(0)">A</span>
           </div>
         </div>
       </transition>
       <transition name="slide-up">
         <div class="setting-wrapper" v-show="ifShowFontSize">
-          <div class="setting-font-size">
+          <div class="setting-font-size" v-if="showTag === 0">
             <div class="preview" :style="{fontSize: fontSizeList[0].fontSize + 'px'}">A</div>
             <div class="select">
-              <div class="select-wrapper" v-for="(item, index) in fontSizeList" :key="index">
+              <div class="select-wrapper" v-for="(item, index) in fontSizeList" :key="index"
+               @click="setFontSize(item.fontSize)">
               <div class="line"></div>
               <div class="point-wrapper">
-                <div class="point"></div>
+                <div class="point" v-show="defaultFontSize === item.fontSize">
+                  <div class="small-point"></div>
+                </div>
               </div>
               <div class="line"></div>
               </div>
             </div>
             <div class="preview" :style="{fontSize: fontSizeList[fontSizeList.length - 1].fontSize + 'px'}">A</div>
+          </div>
+          <div class="setting-theme" v-else-if="showTag === 1">
+            <div class="setting-theme-item" v-for="(item, index) in themeList" :key="index"
+            @click="setTheme(index)">
+              <div class="preview" :style="{background: item.style.body.background}"
+                                   :class="{'no-border': item.style.body.background !== '#fff'}"></div>
+              <div class="text" :class="{'selected': index === defaultTheme}">{{item.name}}</div>
+            </div>
           </div>
         </div>
       </transition>
@@ -43,21 +54,30 @@ export default {
       type: Boolean,
       default: false
     },
-    fontSizeList: {
-      type: Array
-    }
+    fontSizeList: Array,
+    defaultFontSize: Number,
+    themeList: Array,
+    defaultTheme: Number
   },
   data () {
     return {
-      ifShowFontSize: false
+      ifShowFontSize: false,
+      showTag: 0
     }
   },
   methods: {
-    ShowFontSizeBar () {
-      this.ifShowFontSize = !this.ifShowFontSize
+    setTheme (index) {
+      this.$emit('setTheme', index)
+    },
+    showSetting (tag) {
+      this.ifShowFontSize = true
+      this.showTag = tag
     },
     HideFontSizeBar () {
       this.ifShowFontSize = false
+    },
+    setFontSize (fontSize) {
+      this.$emit('setFontSize', fontSize)
     }
   }
 }
@@ -131,11 +151,58 @@ export default {
             border-top: px2rem(1) solid #ccc;
           }
           .point-wrapper {
+            position: relative;
             flex: 0 0 0 ;
             width: 0;
             height: px2rem(7);
             border-left: px2rem(1) solid #ccc;
+            .point {
+              position: absolute;
+              top: px2rem(-8);
+              left: px2rem(-10);
+              width: px2rem(20);
+              height: px2rem(20);
+              border-radius: 50%;
+              background:whitesmoke;
+              border: px2rem(1) solid #ccc;
+              box-shadow: 0 px2rem(4) px2rem(4) rgba(0, 0, 0, .20);
+              @include center;
+              .small-point {
+                width: px2rem(5);
+                height: px2rem(5);
+                background: #666;
+                border-radius: 50%;
+              }
+            }
           }
+        }
+      }
+    }
+    .setting-theme {
+      height: 100%;
+      display: flex;
+      .setting-theme-item {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        padding: px2rem(3);
+        box-sizing: border-box;
+        .preview {
+          flex: 1;
+          border: px2rem(1) solid #ccc;
+          box-sizing: border-box;
+          &.no-border {
+            border: none;
+          }
+        }
+        .text {
+         flex: 0 0  px2rem(20);
+         font-size: px2rem(14);
+         color: #999;
+         @include center;
+         &.selected {
+           color: #333;
+         }
         }
       }
     }

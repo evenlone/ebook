@@ -11,7 +11,12 @@
     </div>
     <menu-bar :ifShowBar="ifShowBar"
               :fontSizeList="fontSizeList"
+              :defaultFontSize="defaultFontSize"
+              @setFontSize="setFontSize"
               ref="menuBar"
+              :themeList="themeList"
+              :defaultTheme="defaultTheme"
+              @setTheme="setTheme"
               ></menu-bar>
   </div>
 </template>
@@ -37,10 +42,61 @@ export default {
         {fontSize: 20},
         {fontSize: 22},
         {fontSize: 24}
-      ]
+      ],
+      defaultFontSize: 16,
+      themeList: [
+        {
+          name: 'default',
+          style: {
+            body: {
+              'color': '#000', 'background': '#fff'
+            }
+          }
+        },
+        {
+          name: 'eye',
+          style: {
+            body: {
+              'color': '#222', 'background': '#ceeaba'
+            }
+          }
+        },
+        {
+          name: 'night',
+          style: {
+            body: {
+              'color': '#fff', 'background': '#222'
+            }
+          }
+        },
+        {
+          name: 'gold',
+          style: {
+            body: {
+              'color': '#000', 'background': 'rgb(241,236,226)'
+            }
+          }
+        }
+      ],
+      defaultTheme: 0
     }
   },
   methods: {
+    registerTheme() {
+      this.themeList.forEach(theme => {
+        this.themes.register(theme.name, theme.style)
+      })
+    },
+    setTheme(index) {
+      this.themes.select(this.themeList[index].name)
+      this.defaultTheme = index
+    },
+    setFontSize (fontSize) {
+      this.defaultFontSize = fontSize
+      if (this.themes) {
+        this.themes.fontSize(fontSize + 'px')
+      }
+    },
     toggleShowBar() {
       this.ifShowBar = !this.ifShowBar
       if (!this.ifShowBar) {
@@ -51,6 +107,7 @@ export default {
       if (this.rendition) {
         if (this.ifShowBar) {
           this.ifShowBar = false
+          this.$refs.menuBar.HideFontSizeBar()
         } else {
           this.rendition.prev()
         }
@@ -60,7 +117,7 @@ export default {
       if (this.rendition) {
         if (this.ifShowBar) {
           this.ifShowBar = false
-          this.$refs.menuBar.ifShowFontSize = false
+          this.$refs.menuBar.HideFontSizeBar()
         } else {
           this.rendition.next()
         }
@@ -77,6 +134,13 @@ export default {
       })
       // 通过Renditon.display 渲染电子书
       this.rendition.display()
+      // themes 对象
+      this.themes = this.rendition.themes
+      // 默认字体
+      this.setFontSize(this.defaultFontSize)
+      // 注册 主题
+      this.registerTheme()
+      this.setTheme(this.defaultTheme)
     }
   },
   mounted () {
