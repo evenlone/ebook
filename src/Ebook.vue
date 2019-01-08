@@ -17,6 +17,8 @@
               :themeList="themeList"
               :defaultTheme="defaultTheme"
               @setTheme="setTheme"
+              :bookAvailable="bookAvailable"
+              @onProgressChange="onProgressChange"
               ></menu-bar>
   </div>
 </template>
@@ -78,10 +80,17 @@ export default {
           }
         }
       ],
-      defaultTheme: 0
+      defaultTheme: 0,
+      bookAvailable: false
     }
   },
   methods: {
+    // 改变进度条
+    onProgressChange(progress) {
+      const percentage = progress / 100
+      const location = percentage > 0 ? this.locations.cfiFromPercentage(percentage) : 0
+      this.rendition.display(location)
+    },
     registerTheme() {
       this.themeList.forEach(theme => {
         this.themes.register(theme.name, theme.style)
@@ -141,6 +150,13 @@ export default {
       // 注册 主题
       this.registerTheme()
       this.setTheme(this.defaultTheme)
+      this.book.ready.then(() => {
+        return this.book.locations.generate()
+      }).then(result => {
+        this.locations = this.book.locations
+        this.bookAvailable = true
+        // this.onProgressChange(50)
+      })
     }
   },
   mounted () {
