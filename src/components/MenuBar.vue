@@ -63,6 +63,7 @@
 </template>
 
 <script>
+import ContentView form './Content.vue'
 export default {
   props: {
     ifShowBar: {
