@@ -59,12 +59,22 @@
           </div>
         </div>
       </transition>
+      <content-view></content-view>
+      <transition name="fade">
+        <div class="content-mask"
+              v-show="ifShowContent"
+              @click="hideContent">
+        </div>
+      </transition>
     </div>
 </template>
 
 <script>
-import ContentView form './Content.vue'
+import ContentView from './Content'
 export default {
+  components: {
+    ContentView
+  },
   props: {
     ifShowBar: {
       type: Boolean,
@@ -80,10 +90,14 @@ export default {
     return {
       ifShowFontSize: false,
       showTag: 0,
-      progress: 0
+      progress: 0,
+      ifShowContent: false
     }
   },
   methods: {
+    hideContent() {
+      // 隐藏进度
+    },
     // 拖动进度条
     onProgressInput(progress) {
       this.progress = progress

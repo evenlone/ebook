@@ -82,7 +82,8 @@ export default {
         }
       ],
       defaultTheme: 0,
-      bookAvailable: false
+      bookAvailable: false,
+      navigation: {}
     }
   },
   methods: {
