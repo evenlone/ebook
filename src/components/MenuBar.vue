@@ -95,8 +95,11 @@ export default {
     }
   },
   methods: {
+    hideSetting: {
+      // 隐藏设置
+    },
     hideContent() {
-      // 隐藏进度
+      this.ifShowContent = false
     },
     // 拖动进度条
     onProgressInput(progress) {
@@ -281,6 +284,16 @@ export default {
         @include center;
       }
     }
+  }
+  .content-mask {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 101;
+    display: flex;
+    width: 100%;
+    height: 100%;
+    background: rgba(51, 51, 51, .8);
   }
 }
 </style>
