@@ -13,13 +13,14 @@
               :fontSizeList="fontSizeList"
               :defaultFontSize="defaultFontSize"
               @setFontSize="setFontSize"
-              ref="menuBar"
               :themeList="themeList"
               :defaultTheme="defaultTheme"
               @setTheme="setTheme"
               :bookAvailable="bookAvailable"
               @onProgressChange="onProgressChange"
-              ></menu-bar>
+              :navigation="navigation"
+              @jumpTo="jumpTo"
+              ref="menuBar"></menu-bar>
   </div>
 </template>
 
@@ -81,10 +82,21 @@ export default {
         }
       ],
       defaultTheme: 0,
-      bookAvailable: false
+      bookAvailable: false,
+      navigation: {}
     }
   },
   methods: {
+    // 章节导航
+    jumpTo(href) {
+      this.rendition.display(href)
+      this.hideTitleAndMenu()
+    },
+    hideTitleAndMenu() {
+      this.ifShowBar = false
+      this.$refs.menuBar.hideSetting()
+      this.$refs.menuBar.hideContent()
+    },
     // 改变进度条
     onProgressChange(progress) {
       const percentage = progress / 100
@@ -151,6 +163,7 @@ export default {
       this.registerTheme()
       this.setTheme(this.defaultTheme)
       this.book.ready.then(() => {
+        this.navigation = this.book.navigation
         return this.book.locations.generate()
       }).then(result => {
         this.locations = this.book.locations

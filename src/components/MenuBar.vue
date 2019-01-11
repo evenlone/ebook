@@ -59,11 +59,22 @@
           </div>
         </div>
       </transition>
+      <content-view></content-view>
+      <transition name="fade">
+        <div class="content-mask"
+              v-show="ifShowContent"
+              @click="hideContent">
+        </div>
+      </transition>
     </div>
 </template>
 
 <script>
+import ContentView from './Content'
 export default {
+  components: {
+    ContentView
+  },
   props: {
     ifShowBar: {
       type: Boolean,
@@ -79,10 +90,17 @@ export default {
     return {
       ifShowFontSize: false,
       showTag: 0,
-      progress: 0
+      progress: 0,
+      ifShowContent: false
     }
   },
   methods: {
+    hideSetting: {
+      // 隐藏设置
+    },
+    hideContent() {
+      this.ifShowContent = false
+    },
     // 拖动进度条
     onProgressInput(progress) {
       this.progress = progress
@@ -266,6 +284,16 @@ export default {
         @include center;
       }
     }
+  }
+  .content-mask {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 101;
+    display: flex;
+    width: 100%;
+    height: 100%;
+    background: rgba(51, 51, 51, .8);
   }
 }
 </style>
