@@ -3,7 +3,7 @@
       <transition name="slide-up">
         <div class="menu-wrapper" :class="{'hide-box-shadow': !ifShowBar||ifShowFontSize}" v-show="ifShowBar">
           <div class="icon-wrapper">
-            <span class="icon-menu icon"></span>
+            <span class="icon-menu icon" @click="showSetting(3)"></span>
           </div>
           <div class="icon-wrapper">
             <span class="icon-progress icon" @click="showSetting(2)"></span>
@@ -42,7 +42,7 @@
               <div class="text" :class="{'selected': index === defaultTheme}">{{item.name}}</div>
             </div>
           </div>
-          <div class="setting-progress" v-else-if="showTag ===2">
+          <div class="setting-progress" v-else-if="showTag === 2">
             <div class="progress-wrapper">
               <input  type="range"
                       class="progress"
@@ -59,7 +59,12 @@
           </div>
         </div>
       </transition>
-      <content-view></content-view>
+      <content-view v-show="ifShowContent"
+                    :ifShowContent="ifShowContent"
+                    :navigation="navigation"
+                    :bookAvailable="bookAvailable"
+                    @jumpTo="jumpTo"
+                    ></content-view>
       <transition name="fade">
         <div class="content-mask"
               v-show="ifShowContent"
@@ -84,7 +89,8 @@ export default {
     defaultFontSize: Number,
     themeList: Array,
     defaultTheme: Number,
-    bookAvailable: Boolean
+    bookAvailable: Boolean,
+    navigation: Object
   },
   data () {
     return {
@@ -113,8 +119,14 @@ export default {
       this.$emit('setTheme', index)
     },
     showSetting (tag) {
-      this.ifShowFontSize = true
       this.showTag = tag
+      if (this.showTag === 3) {
+        this.ifShowContent = true
+        this.ifShowBar = false
+      } else {
+        this.ifShowBar = true
+      }
+      // this.ifShowFontSize = true
     },
     HideFontSizeBar () {
       this.ifShowFontSize = false
