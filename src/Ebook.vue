@@ -121,14 +121,14 @@ export default {
     toggleShowBar() {
       this.ifShowBar = !this.ifShowBar
       if (!this.ifShowBar) {
-        this.$refs.menuBar.HideFontSizeBar()
+        this.$refs.menuBar.hideSetting()
       }
     },
     prevPage() {
       if (this.rendition) {
         if (this.ifShowBar) {
           this.ifShowBar = false
-          this.$refs.menuBar.HideFontSizeBar()
+          this.$refs.menuBar.hideSetting()
         } else {
           this.rendition.prev()
         }
@@ -138,7 +138,7 @@ export default {
       if (this.rendition) {
         if (this.ifShowBar) {
           this.ifShowBar = false
-          this.$refs.menuBar.HideFontSizeBar()
+          this.$refs.menuBar.hideSetting()
         } else {
           this.rendition.next()
         }

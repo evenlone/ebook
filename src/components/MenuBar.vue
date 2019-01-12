@@ -1,7 +1,7 @@
 <template>
     <div class="menu-bar">
       <transition name="slide-up">
-        <div class="menu-wrapper" :class="{'hide-box-shadow': !ifShowBar||ifShowFontSize}" v-show="ifShowBar">
+        <div class="menu-wrapper" :class="{'hide-box-shadow': !ifShowBar||ifSettingShow}" v-show="ifShowBar">
           <div class="icon-wrapper">
             <span class="icon-menu icon" @click="showSetting(3)"></span>
           </div>
@@ -17,7 +17,7 @@
         </div>
       </transition>
       <transition name="slide-up">
-        <div class="setting-wrapper" v-show="ifShowFontSize">
+        <div class="setting-wrapper" v-show="ifSettingShow">
           <div class="setting-font-size" v-if="showTag === 0">
             <div class="preview" :style="{fontSize: fontSizeList[0].fontSize + 'px'}">A</div>
             <div class="select">
@@ -63,8 +63,7 @@
                     :ifShowContent="ifShowContent"
                     :navigation="navigation"
                     :bookAvailable="bookAvailable"
-                    @jumpTo="jumpTo"
-                    ></content-view>
+                    @jumpTo="jumpTo"></content-view>
       <transition name="fade">
         <div class="content-mask"
               v-show="ifShowContent"
@@ -94,18 +93,18 @@ export default {
   },
   data () {
     return {
-      ifShowFontSize: false,
+      ifSettingShow: false,
       showTag: 0,
       progress: 0,
       ifShowContent: false
     }
   },
   methods: {
-    hideSetting: {
-      // 隐藏设置
-    },
     hideContent() {
       this.ifShowContent = false
+    },
+    jumpTo (target) {
+      this.$emit('jumpTo', target)
     },
     // 拖动进度条
     onProgressInput(progress) {
@@ -122,14 +121,13 @@ export default {
       this.showTag = tag
       if (this.showTag === 3) {
         this.ifShowContent = true
-        this.ifShowBar = false
+        this.ifSettingShow = false
       } else {
-        this.ifShowBar = true
+        this.ifSettingShow = true
       }
-      // this.ifShowFontSize = true
     },
-    HideFontSizeBar () {
-      this.ifShowFontSize = false
+    hideSetting() {
+      this.ifSettingShow = false
     },
     setFontSize (fontSize) {
       this.$emit('setFontSize', fontSize)
