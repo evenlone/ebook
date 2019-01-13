@@ -89,7 +89,8 @@ export default {
     themeList: Array,
     defaultTheme: Number,
     bookAvailable: Boolean,
-    navigation: Object
+    navigation: Object,
+    ebookProgress: Number
   },
   data () {
     return {
@@ -97,6 +98,15 @@ export default {
       showTag: 0,
       progress: 0,
       ifShowContent: false
+    }
+  },
+  watch: {
+    ebookProgress: {
+      handler: function(val, oldval) {
+        this.progress = val
+        this.$refs.progress.style.backgroundSize = `${this.progress}% 100%`
+      },
+      deep: true
     }
   },
   methods: {

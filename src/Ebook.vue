@@ -20,6 +20,7 @@
               @onProgressChange="onProgressChange"
               :navigation="navigation"
               @jumpTo="jumpTo"
+              :ebookProgress="ebookProgress"
               ref="menuBar"></menu-bar>
   </div>
 </template>
@@ -83,7 +84,9 @@ export default {
       ],
       defaultTheme: 0,
       bookAvailable: false,
-      navigation: {}
+      navigation: {},
+      locations: {},
+      ebookProgress: 0
     }
   },
   methods: {
@@ -130,7 +133,11 @@ export default {
           this.ifShowBar = false
           this.$refs.menuBar.hideSetting()
         } else {
-          this.rendition.prev()
+          this.rendition.prev().then(() => {
+            const currentLocation = this.rendition.currentLocation()
+            this.ebookProgress = this.locations.percentageFromCfi(currentLocation.start.cfi)
+            this.ebookProgress = Math.round(this.ebookProgress * 100)
+          })
         }
       }
     },
@@ -140,7 +147,12 @@ export default {
           this.ifShowBar = false
           this.$refs.menuBar.hideSetting()
         } else {
-          this.rendition.next()
+          this.rendition.next().then(() => {
+            const currentLocation = this.rendition.currentLocation()
+            this.ebookProgress = this.locations.percentageFromCfi(currentLocation.start.cfi)
+            this.ebookProgress = Math.round(this.ebookProgress * 100)
+            console.log(this.ebookProgress)
+          })
         }
       }
     },
