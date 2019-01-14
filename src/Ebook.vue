@@ -92,7 +92,9 @@ export default {
   methods: {
     // 章节导航
     jumpTo(href) {
-      this.rendition.display(href)
+      this.rendition.display(href).then(() => {
+        this.showProgress()
+      })
       this.hideTitleAndMenu()
     },
     hideTitleAndMenu() {
@@ -134,9 +136,7 @@ export default {
           this.$refs.menuBar.hideSetting()
         } else {
           this.rendition.prev().then(() => {
-            const currentLocation = this.rendition.currentLocation()
-            this.ebookProgress = this.bookAvailable ? this.locations.percentageFromCfi(currentLocation.start.cfi) : 0
-            this.ebookProgress = Math.round(this.ebookProgress * 100)
+            this.showProgress()
           })
         }
       }
@@ -148,13 +148,16 @@ export default {
           this.$refs.menuBar.hideSetting()
         } else {
           this.rendition.next().then(() => {
-            const currentLocation = this.rendition.currentLocation()
-            this.ebookProgress = this.bookAvailable ? this.locations.percentageFromCfi(currentLocation.start.cfi) : 0
-            this.ebookProgress = Math.round(this.ebookProgress * 100)
-            // console.log('ebookProgress: ' + this.ebookProgress)
+            this.showProgress()
           })
         }
       }
+    },
+    // 进度条：翻页和章节跳转
+    showProgress() {
+      const currentLocation = this.rendition.currentLocation()
+      this.ebookProgress = this.bookAvailable ? this.locations.percentageFromCfi(currentLocation.start.cfi) : 0
+      this.ebookProgress = Math.round(this.ebookProgress * 100)
     },
     // 电子书的解析和渲染
     showEpub() {
