@@ -102,11 +102,14 @@ export default {
   },
   watch: {
     ebookProgress: {
-      handler: function(val, oldval) {
+      handler: function(val) {
         this.progress = val
-        this.$refs.progress.style.backgroundSize = `${this.progress}% 100%`
+        if (this.bookAvailable && this.$refs.progress) {
+          this.$refs.progress.style.backgroundSize = `${this.progress}% 100%`
+          // console.log(this.$refs.progress)
+        }
       },
-      deep: true
+      deep: false
     }
   },
   methods: {

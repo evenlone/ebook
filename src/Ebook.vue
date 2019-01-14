@@ -135,7 +135,7 @@ export default {
         } else {
           this.rendition.prev().then(() => {
             const currentLocation = this.rendition.currentLocation()
-            this.ebookProgress = this.locations.percentageFromCfi(currentLocation.start.cfi)
+            this.ebookProgress = this.bookAvailable ? this.locations.percentageFromCfi(currentLocation.start.cfi) : 0
             this.ebookProgress = Math.round(this.ebookProgress * 100)
           })
         }
@@ -149,9 +149,9 @@ export default {
         } else {
           this.rendition.next().then(() => {
             const currentLocation = this.rendition.currentLocation()
-            this.ebookProgress = this.locations.percentageFromCfi(currentLocation.start.cfi)
+            this.ebookProgress = this.bookAvailable ? this.locations.percentageFromCfi(currentLocation.start.cfi) : 0
             this.ebookProgress = Math.round(this.ebookProgress * 100)
-            console.log(this.ebookProgress)
+            // console.log('ebookProgress: ' + this.ebookProgress)
           })
         }
       }
